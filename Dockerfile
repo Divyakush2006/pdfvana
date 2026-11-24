@@ -26,7 +26,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 COPY backend/requirements.txt .
-RUN pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+# No package manager or build tools at runtime: smaller image, smaller attack surface.
+RUN pip install --upgrade pip && pip install -r requirements.txt \
+ && pip uninstall -y setuptools wheel && python -m pip uninstall -y pip
 COPY backend/app ./app
 RUN useradd --no-create-home --shell /usr/sbin/nologin --uid 10001 appuser \
  && mkdir -p /data/jobs /data/tmp && chown -R appuser /data && chmod -R go-w /app
@@ -47,7 +49,7 @@ RUN npm run build
 # ---------- 3. Test runner (CI) ----------
 FROM engine AS test
 USER root
-RUN pip install "pytest>=8"
+RUN python -m ensurepip && python -m pip install --no-cache-dir "pytest>=8"
 COPY tests /tests
 USER appuser
 ENTRYPOINT ["python", "-m", "pytest", "-q", "/tests"]

@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Security
+- The runtime image no longer ships a package manager or build tools (pip, setuptools, wheel), removing the last
+  vulnerability reported by the container scan.
+
 ## [1.1.0] — 2026-11-24
 
 ### Security
