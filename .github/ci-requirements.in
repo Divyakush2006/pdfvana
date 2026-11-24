@@ -1,0 +1,3 @@
+# Tools used by the CI workflows (lint and dependency audit).
+ruff
+pip-audit
