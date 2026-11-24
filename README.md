@@ -249,13 +249,10 @@ Contributions of every size are welcome — bug reports, new tools, translations
 [`good first issue`](https://github.com/divyakush2006/pdfvana/labels/good%20first%20issue). Please report vulnerabilities
 privately as described in [SECURITY.md](SECURITY.md).
 
-## ⭐ Star history
+## ⭐ Support the project
 
-If PDFVana saves you time or money, **please star the repository** — it helps others discover it.
-
-<a href="https://star-history.com/#divyakush2006/pdfvana&Date">
-  <img src="https://api.star-history.com/svg?repos=divyakush2006/pdfvana&type=Date" alt="Star history chart" width="600" />
-</a>
+If PDFVana saves you time or money, **please [star the repository](https://github.com/divyakush2006/pdfvana/stargazers)** —
+it is the single best way to help others discover a free alternative. Sharing it with your team or community helps too.
 
 ## 📄 License
 
