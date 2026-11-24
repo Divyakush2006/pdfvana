@@ -96,7 +96,13 @@ PAIRS: list[tuple[str, str]] = [
     ("pdf", "svg"), ("pdf", "png"), ("pdf", "txt"), ("pdf", "epub"), ("pdf", "html"), ("pdf", "tiff"),
     ("epub", "pdf"), ("md", "pdf"), ("txt", "pdf"), ("tiff", "pdf"), ("heic", "pdf"), ("svg", "pdf"),
     ("docx", "odt"), ("odt", "docx"), ("docx", "md"), ("md", "docx"), ("html", "docx"), ("rtf", "docx"),
+    ("pptx", "png"), ("docx", "jpg"), ("xlsx", "pdf"), ("csv", "pdf"),    ("pdf", "docx"),
+    ("docx", "pdf"),
+    ("pptx", "pdf"),    ("docx", "odt"), ("odt", "docx"), ("docx", "md"), ("md", "docx"), ("html", "docx"), ("rtf", "docx"),
     ("pptx", "png"), ("docx", "jpg"), ("xlsx", "pdf"), ("csv", "pdf"),
+    ("pdf", "docx"),
+    ("docx", "pdf"),
+    ("pptx", "pdf"),
 ]
 
 
