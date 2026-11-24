@@ -10,7 +10,33 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 sys.path.insert(0, "/app")
 
 from app.engine import geometry as g  # noqa: E402
+from app.security import SlidingWindow, media_time, sanitize_html  # noqa: E402
 from app.util import ToolError, parse_pages, parse_ranges, safe_name  # noqa: E402
+
+
+def test_sanitize_html_removes_active_content():
+    dirty = """<html><head><meta http-equiv="refresh" content="0;url=file:///etc/"><base href="file:///">
+    <style>body{background:url(file:///etc/passwd)} @import 'file:///x.css';</style></head>
+    <body onload="x()"><script>alert(1)</script><iframe src="file:///etc/passwd"></iframe>
+    <a href="javascript:alert(1)">link</a><img src="file:///etc/passwd" srcset="file:///a 1x">
+    <svg><use href="file:///etc/passwd#x"/></svg><object data="x.swf"></object><p style="color:red">Keep me</p></body></html>"""
+    clean = sanitize_html(dirty).lower()
+    for bad in ("<script", "<iframe", "<object", "<base", "http-equiv", "onload", "javascript:", "file:"):
+        assert bad not in clean, bad
+    assert "keep me" in clean and "color:red" in clean
+
+
+def test_media_time_validation():
+    assert media_time("75") == "75" and media_time("00:01:15.5") == "00:01:15.5" and media_time("") is None
+    for bad in ("-i /etc/passwd", "1;rm -rf /", "concat:a|b", "00:00:05 -f"):
+        with pytest.raises(ToolError):
+            media_time(bad)
+
+
+def test_sliding_window_limits():
+    w = SlidingWindow(3, window=60)
+    assert [w.allow("a") for _ in range(4)] == [True, True, True, False]
+    assert w.allow("b")
 
 
 def test_parse_pages():

@@ -1,8 +1,18 @@
+{
+	servers {
+		timeouts {
+			read_header 10s
+			idle 2m
+		}
+	}
+}
+
 {$DOMAIN} {
 	encode zstd gzip
 	request_body {
 		max_size 600MB
 	}
+	header -Server
 	reverse_proxy app:8000 {
 		transport http {
 			read_timeout 15m
