@@ -1,0 +1,59 @@
+# Production deployment with automatic HTTPS (Let's Encrypt via Caddy).
+#
+#   export DOMAIN=pdfvana.example.com
+#   docker compose -f deploy/docker-compose.prod.yml up -d
+#
+# Point your domain's DNS A/AAAA record at the server first.
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN to your public hostname}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+  app:
+    image: ghcr.io/divyakush2006/pdfvana:latest
+    restart: unless-stopped
+    environment:
+      SITE_URL: https://${DOMAIN}
+      TRUST_PROXY: "true"
+      CONVERTER_URL: http://converter:3000
+      JOB_TTL_SECONDS: "3600"
+      MAX_FILE_MB: "200"
+      MAX_TOTAL_MB: "500"
+      RATE_LIMIT_PER_MINUTE: "40"
+    tmpfs:
+      - /tmp
+    depends_on:
+      - converter
+
+  converter:
+    image: gotenberg/gotenberg:9
+    restart: unless-stopped
+    environment:
+      API_TIMEOUT: 300s
+      API_BODY_LIMIT: 600MB
+      API_DISABLE_DOWNLOAD_FROM: "true"
+      CHROMIUM_AUTO_START: "true"
+      LIBREOFFICE_AUTO_START: "true"
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+      LIBREOFFICE_DENY_PRIVATE_IPS: "true"
+      WEBHOOK_DISABLE: "true"
+      LIBREOFFICE_MAX_MEMORY: 1500MB
+      CHROMIUM_MAX_MEMORY: 1500MB
+      GOTENBERG_HIDE_BANNER: "true"
+
+volumes:
+  caddy_data:
+  caddy_config:

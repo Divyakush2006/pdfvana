@@ -1,0 +1,40 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report a bug! Please **don't attach confidential documents** — use a sample file instead.
+  - type: input
+    id: tool
+    attributes:
+      label: Tool
+      description: Which tool were you using? (e.g. Compress PDF, Universal Converter → PNG)
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead? Include any error message.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open …
+        2. Upload …
+        3. Click …
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Browser and OS, or your self-hosted version / image tag
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: For self-hosted instances, relevant output of `docker compose logs app`
+      render: text

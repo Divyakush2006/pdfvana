@@ -1,0 +1,22 @@
+# dependencies & builds
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# local / private
+.env
+.env.*
+.playwright-mcp/
+.vscode/
+.idea/
+RESEARCH.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript incremental build info
+*.tsbuildinfo

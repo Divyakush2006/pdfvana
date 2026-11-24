@@ -1,0 +1,42 @@
+# PDFVana — local / single-server deployment
+#   docker compose up -d --build        ->  http://localhost:8080
+# For a public deployment with automatic HTTPS, see deploy/docker-compose.prod.yml.
+
+services:
+  app:
+    build:
+      context: .
+      target: app
+    image: ghcr.io/divyakush2006/pdfvana:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8000"
+    environment:
+      BRAND_NAME: PDFVana
+      SITE_URL: ${SITE_URL:-http://localhost:8080}
+      CONVERTER_URL: http://converter:3000
+      JOB_TTL_SECONDS: "3600"
+      MAX_FILE_MB: "200"
+      MAX_TOTAL_MB: "500"
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-40}
+    tmpfs:
+      - /tmp
+    depends_on:
+      - converter
+
+  # Office & browser conversion service. Internal only — never expose it publicly.
+  converter:
+    image: gotenberg/gotenberg:9
+    restart: unless-stopped
+    environment:
+      API_TIMEOUT: 300s
+      API_BODY_LIMIT: 600MB
+      API_DISABLE_DOWNLOAD_FROM: "true"
+      CHROMIUM_AUTO_START: "true"
+      LIBREOFFICE_AUTO_START: "true"
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+      LIBREOFFICE_DENY_PRIVATE_IPS: "true"
+      WEBHOOK_DISABLE: "true"
+      LIBREOFFICE_MAX_MEMORY: 1500MB
+      CHROMIUM_MAX_MEMORY: 1500MB
+      GOTENBERG_HIDE_BANNER: "true"
