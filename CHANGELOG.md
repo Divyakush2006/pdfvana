@@ -16,6 +16,8 @@ All notable changes to this project are documented here. The format follows
   sitemap listed the address twice. A new test now rejects duplicate or clashing conversion pages.
 
 ### Security
+- Every dependency is pinned: base images by digest, GitHub Actions by commit, and all Python packages
+  (application, tests and CI tools) by version with hash verification.
 - The runtime image no longer ships a package manager or build tools (pip, setuptools, wheel), removing the last
   vulnerability reported by the container scan.
 

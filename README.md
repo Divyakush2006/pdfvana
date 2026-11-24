@@ -214,6 +214,11 @@ Details: [docs/architecture.md](docs/architecture.md).
 | [Contributing](CONTRIBUTING.md) | Local development, tests and project layout |
 | [Changelog](CHANGELOG.md) | What changed in every release |
 
+Python dependencies are declared in `backend/requirements.in` and locked, with hashes, in `backend/requirements.txt`.
+After changing a `.in` file, regenerate its lock with
+`pip-compile --generate-hashes --allow-unsafe --strip-extras --no-emit-index-url backend/requirements.in`
+(run it on Linux with Python 3.12, for example inside `python:3.12-slim-bookworm`).
+
 ## 🗺️ Roadmap
 
 - [x] 49 tools across PDF, documents, images, audio, video and data

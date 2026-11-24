@@ -17,13 +17,13 @@ jobs:
     name: Lint & type-check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
-      - run: pip install ruff
+      - run: pip install --require-hashes -r .github/ci-requirements.txt
       - run: ruff check backend tests
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -42,8 +42,8 @@ jobs:
       API_RATE_LIMIT_PER_MINUTE: "100000"
       MAX_ACTIVE_JOBS_PER_CLIENT: "1000"
     steps:
-      - uses: actions/checkout@v7
-      - uses: docker/setup-buildx-action@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - name: Build and start the stack
         run: docker compose -p pdfvana up -d --build --wait
       - name: Build test runner

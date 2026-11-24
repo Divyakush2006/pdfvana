@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1.7
 # ---------- 1. Processing engine + API ----------
-FROM python:3.12-slim-bookworm AS engine
+# Base images are pinned by digest; Dependabot proposes updates.
+FROM python:3.12-slim-bookworm@sha256:44cf1793efa7c7a476bb0f2cff81443f4a072c90c1cb127e2924933daa3e8c64 AS engine
 ARG TARGETARCH=amd64
 ARG PANDOC_VERSION=3.6.4
 # SHA-256 of the official release archives — the build fails if a download was tampered with.
@@ -26,9 +27,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 COPY backend/requirements.txt .
+# Every package is pinned and hash-verified (requirements.txt is compiled from requirements.in).
 # No package manager or build tools at runtime: smaller image, smaller attack surface.
-RUN pip install --upgrade pip && pip install -r requirements.txt \
- && pip uninstall -y setuptools wheel && python -m pip uninstall -y pip
+RUN pip install --require-hashes -r requirements.txt \
+ && (pip uninstall -y setuptools wheel || true) && python -m pip uninstall -y pip
 COPY backend/app ./app
 RUN useradd --no-create-home --shell /usr/sbin/nologin --uid 10001 appuser \
  && mkdir -p /data/jobs /data/tmp && chown -R appuser /data && chmod -R go-w /app
@@ -39,17 +41,18 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD python -c "import
 CMD ["sh", "-c", "mkdir -p /data/jobs /data/tmp && exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips '*' --timeout-keep-alive 15 --limit-concurrency 1000 --backlog 2048 --no-server-header --h11-max-incomplete-event-size 65536"]
 
 # ---------- 2. Web app build ----------
-FROM node:26-alpine AS web
+FROM node:26-alpine@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS web
 WORKDIR /web
-COPY frontend/package.json frontend/package-lock.json* ./
-RUN npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci --no-audit --no-fund
 COPY frontend/ ./
 RUN npm run build
 
 # ---------- 3. Test runner (CI) ----------
 FROM engine AS test
 USER root
-RUN python -m ensurepip && python -m pip install --no-cache-dir "pytest>=8"
+COPY tests/requirements.txt /tmp/test-requirements.txt
+RUN python -m ensurepip && python -m pip install --no-cache-dir --require-hashes -r /tmp/test-requirements.txt
 COPY tests /tests
 USER appuser
 ENTRYPOINT ["python", "-m", "pytest", "-q", "/tests"]
