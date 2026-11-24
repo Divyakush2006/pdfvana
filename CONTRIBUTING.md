@@ -17,7 +17,37 @@ docker compose up -d --build            # full app on http://localhost:8080
 cd frontend && npm install && npm run dev  # UI with hot reload on http://localhost:5173
 ```
 
-See the *Development* section of the [README](README.md#-development) for running the engine with live code reload.
+## Development
+
+Run the engine with your local code mounted, and the UI with hot reload:
+
+```bash
+docker compose up -d converter
+docker build --target engine -t pdfvana-engine .
+docker run --rm -p 8080:8000 --network pdfvana_default -e CONVERTER_URL=http://converter:3000 \
+  -v "$PWD/backend/app:/app/app" pdfvana-engine            # backend with your local code
+
+cd frontend && npm install && npm run dev                   # UI with hot reload on :5173
+```
+
+Run the unit, end-to-end and security tests against a running stack:
+
+```bash
+docker build --target test -t pdfvana-test .
+docker run --rm --network pdfvana_default -e BASE_URL=http://app:8000 pdfvana-test
+```
+
+### Dependencies
+
+Python dependencies are declared in `.in` files (`backend/requirements.in`, `tests/requirements.in`,
+`.github/ci-requirements.in`) and locked, with hashes, in the matching `.txt` files. After changing a `.in` file,
+regenerate its lock, for example:
+
+```bash
+pip-compile --generate-hashes --allow-unsafe --strip-extras --no-emit-index-url backend/requirements.in
+```
+
+Run it on Linux with Python 3.12, for example inside `python:3.12-slim-bookworm`, so the hashes match the image.
 
 ## Project layout
 

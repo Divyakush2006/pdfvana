@@ -1,89 +1,109 @@
 <div align="center">
 
-<a href="https://github.com/divyakush2006/pdfvana"><img src="frontend/public/favicon.svg" width="96" alt="PDFVana logo" /></a>
+<a href="https://github.com/divyakush2006/pdfvana"><img src="frontend/public/favicon.svg" width="88" alt="PDFVana logo" /></a>
 
 # PDFVana
 
-### The free & open-source alternative to iLovePDF, Smallpdf and CloudConvert
+### The open-source file platform: every PDF, document, image, audio and video tool in one private app
 
-**49 tools for PDFs, documents, images, audio and video — merge, split, compress, convert, OCR, sign and protect.**<br/>
-No sign-up. No watermarks. No limits. Your files never leave your server.
+**A free, self-hosted alternative to iLovePDF, Smallpdf and CloudConvert.**<br/>
+Merge, split, compress, convert, OCR, sign and protect, with no sign-up, no watermarks and no limits.
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-4f46e5.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/divyakush2006/pdfvana?color=4f46e5&label=release)](https://github.com/divyakush2006/pdfvana/releases)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-4f46e5.svg)](LICENSE)
 [![CI](https://github.com/divyakush2006/pdfvana/actions/workflows/ci.yml/badge.svg)](https://github.com/divyakush2006/pdfvana/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/divyakush2006/pdfvana/actions/workflows/codeql.yml/badge.svg)](https://github.com/divyakush2006/pdfvana/actions/workflows/codeql.yml)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/divyakush2006/pdfvana/badge)](https://securityscorecards.dev/viewer/?uri=github.com/divyakush2006/pdfvana)
-[![Docker](https://img.shields.io/badge/docker-ghcr.io-2496ED?logo=docker&logoColor=white)](https://github.com/divyakush2006/pdfvana/pkgs/container/pdfvana)
-[![GitHub stars](https://img.shields.io/github/stars/divyakush2006/pdfvana?style=flat&color=7c3aed)](https://github.com/divyakush2006/pdfvana/stargazers)
-[![Last commit](https://img.shields.io/github/last-commit/divyakush2006/pdfvana?color=4f46e5)](https://github.com/divyakush2006/pdfvana/commits/main)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-7c3aed.svg)](CONTRIBUTING.md)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Divyakush2006/pdfvana/badge)](https://scorecard.dev/viewer/?uri=github.com/Divyakush2006/pdfvana)
+[![Docker image](https://img.shields.io/badge/docker-amd64%20%7C%20arm64-2496ED?logo=docker&logoColor=white)](https://github.com/divyakush2006/pdfvana/pkgs/container/pdfvana)
+[![GitHub stars](https://img.shields.io/github/stars/divyakush2006/pdfvana?style=flat&color=7c3aed&logo=github)](https://github.com/divyakush2006/pdfvana/stargazers)
 
-[**Quick start**](#-quick-start) · [**Features**](#-features) · [**Screenshots**](#-screenshots) · [**Self-hosting**](#-deploy-to-production) · [**API**](#-rest-api) · [**FAQ**](#-faq) · [**Roadmap**](#-roadmap)
+[**Quick start**](#-quick-start) · [**Features**](#-features) · [**For teams**](#-built-for-teams-and-enterprises) · [**Self-hosting**](#-deploy-to-production) · [**API**](#-rest-api) · [**Docs**](#-documentation) · [**FAQ**](#-faq)
 
-<img src="docs/assets/home.jpg" alt="PDFVana — free open-source PDF tools and file converter, an iLovePDF and Smallpdf alternative" width="100%" />
+<br/>
 
-*Vana (वन) is Sanskrit for "forest" — a forest of free tools for every file.*
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/home-dark.jpg" />
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/home.jpg" />
+  <img src="docs/assets/home.jpg" alt="PDFVana home page: search 49 free PDF, image, audio and video tools, a free open-source iLovePDF and Smallpdf alternative" width="100%" />
+</picture>
+
+<sub><i>Vana (वन) is Sanskrit for "forest": a forest of free tools for every file.</i></sub>
 
 </div>
 
----
+<br/>
 
-## ✨ Why PDFVana?
+PDFVana brings the tools people use every day (PDF editing, Office conversion, image, audio and video conversion, OCR,
+e-signatures and redaction) into **one fast web app that you run on your own infrastructure**. Documents never leave
+your servers, every feature is free, and every tool is also available as a REST API.
 
-Online PDF services are convenient, but their free plans limit what you can do, push you towards a subscription, and require
-uploading your documents to someone else's servers. PDFVana gives you the same everyday tools — and more — **free, open
-source and on infrastructure you control**.
+## ✨ Key capabilities
 
-| | **PDFVana** | Typical freemium PDF sites |
-|---|:---:|:---:|
-| Price | **Free forever** | Free tier + paid plans |
-| All tools available without an account | ✅ | Premium-only tools |
-| Unlimited tasks, files and pages | ✅ (you set the limits) | Daily / size limits |
-| Watermark-free output | ✅ | Varies |
-| Custom workflows (merge → steps → export) | ✅ **Document Studio** | Premium |
-| Images, audio, video & data conversion in the same app | ✅ | Separate sites |
-| Open source & auditable | ✅ Apache-2.0 | ❌ |
-| Self-hosted — documents never leave your network | ✅ | ❌ |
-| REST API | ✅ free | Paid |
-| Tracking / analytics | **None** | Common |
+- **Everything in one place.** 49 tools for PDFs, Office documents, images, audio, video and data, with 175 input
+  formats and over 2,600 format combinations.
+- **Workflows, not just tools.** *Document Studio* merges any mix of files and applies steps (compress, OCR, watermark,
+  page numbers, password and more) in one pass, then exports to the format you need.
+- **Office-grade fidelity.** Faithful Word, PowerPoint and Excel rendering; layout-aware PDF to Word, PowerPoint and
+  Excel conversion; OCR in 28 languages, including Hindi, Bengali, Tamil and Telugu.
+- **Private by design.** Files are processed on your hardware and deleted automatically. No accounts, tracking or
+  telemetry, and it runs fully offline.
+- **Secure by default.** Every job runs in an isolated, resource-limited process, behind read-only containers, with an
+  automated attack test for every security control.
+- **Built to integrate.** A REST API with OpenAPI docs for every tool, Docker images for amd64 and arm64, and a
+  one-command production deployment with automatic HTTPS.
 
 ## ⚡ Quick start
 
-**Option 1 — one command, no clone needed**
+**One command, no clone needed.** Requires [Docker](https://docs.docker.com/get-docker/) and about 4 GB of RAM.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/divyakush2006/pdfvana/main/docker-compose.yml -o docker-compose.yml
 docker compose up -d
 ```
 
-**Option 2 — from source**
+Then open **http://localhost:8080**. To build from source instead:
 
 ```bash
 git clone https://github.com/divyakush2006/pdfvana.git && cd pdfvana
 docker compose up -d --build
 ```
 
-Open **http://localhost:8080** 🎉 — requires [Docker](https://docs.docker.com/get-docker/) and ~4 GB RAM.
+## ⚖️ How PDFVana compares
+
+| | **PDFVana** | Typical freemium PDF sites |
+|---|:---:|:---:|
+| Price | **Free forever** | Free tier plus paid plans |
+| Every tool available without an account | ✅ | Some tools premium-only |
+| Tasks, files and pages | **Unlimited** (you set the limits) | Daily and size limits |
+| Watermark-free output | ✅ | Varies |
+| Multi-step workflows (merge, apply steps, export) | ✅ Document Studio | Premium |
+| Images, audio, video and data in the same app | ✅ | Separate sites |
+| Documents stay on your own servers | ✅ | ❌ |
+| Open source and auditable | ✅ Apache-2.0 | ❌ |
+| REST API | ✅ Free | Paid |
+| Tracking and analytics | **None** | Common |
 
 ## 🧰 Features
 
-**49 tools · 175 input formats · 2,600+ format combinations · 83 one-click conversion pages** (e.g. `/pdf-to-docx`, `/docx-to-pdf`, `/heic-to-jpg`, `/mp4-to-mp3`).
+**49 tools · 175 input formats · 2,600+ format combinations · 83 one-click conversion pages** such as
+`/pdf-to-docx`, `/docx-to-pdf`, `/pptx-to-pdf`, `/heic-to-jpg` and `/mp4-to-mp3`.
 
 | Category | What you can do |
 |---|---|
-| ⭐ **Workflows** | **Document Studio** — drop any mix of files, merge them, apply steps (compress, OCR, watermark, page numbers, header/footer, rotate, remove pages, grayscale, flatten, sanitize, password) and export to any format · **Universal Converter** — anything → anything |
-| 📑 **Organize PDF** | Merge PDFs *and* Word/Excel/PowerPoint/images · Split · Remove pages · Extract pages · Visual organizer (drag, rotate, delete, insert blank pages) · Rotate |
-| 🗜️ **Optimize PDF** | Compress (4 levels **or an exact target size in MB**) · Repair · OCR in 28 languages (incl. Hindi, Bengali, Tamil, Telugu) · PDF/A |
-| 📥 **Convert to PDF** | Word, PowerPoint, Excel, Pages/Keynote/Numbers, ODF, images (incl. HEIC & SVG), web pages & HTML, Markdown, EPUB, e-mail (EML), code, CSV/JSON |
-| 📤 **Convert from PDF** | Word (layout, tables & images) · editable PowerPoint · Excel/CSV/JSON · JPG/PNG/WebP/TIFF · SVG · Text/Markdown/HTML/EPUB/ODT/RTF |
-| 🖼️ **Image tools** | Convert JPG, PNG, WebP, AVIF, HEIC, GIF, BMP, TIFF, ICO, SVG · Compress to an **exact KB size** · Resize/rotate/flip · PNG/JPG → SVG vectoriser · Favicon generator · Remove photo metadata (EXIF/GPS) · Website screenshot |
-| 🎬 **Audio & video** | Convert MP4, MOV, MKV, WebM, AVI (trim, resize, mute) · MP3, WAV, FLAC, M4A, OGG, Opus · Video → GIF · Compress video |
-| ✏️ **Edit PDF** | Watermark (text in any script or image, mosaic, behind content) · Page numbers · Header & footer · Sign (draw/type/upload, drag to place) · Crop (auto-trim) · Flatten · Metadata |
-| 🔐 **Security** | Protect (AES-256 + permissions) · Unlock · **True redaction** with e-mail/phone/card/Aadhaar/PAN detection · Sanitize hidden data |
-| 🧠 **Intelligence** | Compare documents side-by-side · PDF → Markdown for AI/LLM tools |
+| ⭐ **Workflows** | **Document Studio**: combine any files, apply compress, OCR, watermark, page numbers, header/footer, rotate, remove pages, grayscale, flatten, sanitize or password steps, and export to any format · **Universal Converter**: anything to anything |
+| 📑 **Organize PDF** | Merge PDFs *and* Word, Excel, PowerPoint or image files · Split · Remove and extract pages · Visual organizer (drag, rotate, delete, insert blank pages) · Rotate |
+| 🗜️ **Optimize PDF** | Compress (4 levels **or an exact target size**) · Repair · OCR in 28 languages · PDF/A archiving |
+| 📥 **Convert to PDF** | Word, PowerPoint, Excel, Pages, Keynote, Numbers, OpenDocument, images (including HEIC and SVG), web pages, HTML, Markdown, EPUB, e-mail (EML), source code, CSV and JSON |
+| 📤 **Convert from PDF** | Word (layout, tables and images kept) · Editable PowerPoint · Excel, CSV and JSON tables · JPG, PNG, WebP, TIFF · SVG · Text, Markdown, HTML, EPUB, ODT, RTF |
+| 🖼️ **Images** | Convert JPG, PNG, WebP, AVIF, HEIC, GIF, BMP, TIFF, ICO and SVG · Compress to an **exact KB size** · Resize, rotate and flip · Vectorise PNG/JPG to SVG · Favicon generator · Remove photo metadata (EXIF and GPS) · Website screenshots |
+| 🎬 **Audio & video** | Convert MP4, MOV, MKV, WebM and AVI (trim, resize, mute) · MP3, WAV, FLAC, M4A, OGG and Opus · Video to GIF · Compress video |
+| ✏️ **Edit PDF** | Watermark (text in any script, or an image) · Page numbers · Header and footer · Sign (draw, type or upload, then drag to place) · Crop with auto-trim · Flatten · Edit metadata |
+| 🔐 **Security** | Protect with AES-256 and permissions · Unlock · **True redaction** with automatic e-mail, phone, card, Aadhaar and PAN detection · Sanitize hidden data |
+| 🧠 **Intelligence** | Compare two documents side by side · PDF to Markdown for AI and LLM tools |
 
 <details>
-<summary><b>Every tool</b> (click to expand)</summary>
+<summary><b>See all 49 tools</b></summary>
+<br/>
 
 Document Studio · Universal Converter · Merge PDF · Split PDF · Remove Pages · Extract Pages · Organize PDF · Rotate PDF ·
 Compress PDF · Repair PDF · OCR PDF · PDF to PDF/A · Word to PDF · PowerPoint to PDF · Excel to PDF · Image to PDF ·
@@ -99,10 +119,21 @@ Sanitize PDF · Compare PDF · PDF to Markdown
 
 <table>
 <tr>
-<td width="50%"><img src="docs/assets/converter.jpg" alt="Universal converter showing the formats a video can be converted to" /><p align="center"><b>Universal Converter</b> — only shows formats your files can become</p></td>
-<td width="50%"><img src="docs/assets/result.jpg" alt="Result page with download, preview and continue-with suggestions" /><p align="center"><b>Results</b> — download, preview, delete now or continue with another tool</p></td>
+<td width="50%"><img src="docs/assets/converter.jpg" alt="Universal Converter listing the formats a video can be converted to" /><p align="center"><b>Universal Converter</b><br/><sub>Only offers formats your files can actually become</sub></p></td>
+<td width="50%"><img src="docs/assets/result.jpg" alt="Result page with download, preview and continue-with-another-tool options" /><p align="center"><b>Results</b><br/><sub>Download, preview, delete now or continue with another tool</sub></p></td>
 </tr>
 </table>
+
+## 🏢 Built for teams and enterprises
+
+| | |
+|---|---|
+| **Data residency** | Documents are processed and stored only on your servers and deleted automatically after a period you choose. Keeping files in-house simplifies compliance with data-protection rules such as GDPR and India's DPDP Act. |
+| **Access control** | PDFVana has no user accounts to manage. Put it behind your existing single sign-on or identity-aware proxy to restrict it to your organisation. |
+| **Integration** | Every tool is an HTTP endpoint with OpenAPI docs, ready for internal portals, back-office jobs and automation platforms. |
+| **Scale** | One container handles a team; add CPU and workers for public traffic. Sizing guidance is in the [deployment guide](docs/deployment.md#sizing). |
+| **Security assurance** | Process isolation, sandboxed converters, read-only containers and a documented [threat model](docs/security.md). Every dependency is pinned by hash, digest or commit, with continuous CodeQL, Trivy, pip-audit, npm audit and OpenSSF Scorecard scanning. |
+| **Licensing** | Apache-2.0: commercial use, modification and redistribution allowed, with an explicit patent grant. No open-core, no paid tier. |
 
 ## 🌍 Deploy to production
 
@@ -113,49 +144,53 @@ export DOMAIN=pdf.example.com          # DNS must point at your server
 docker compose -f deploy/docker-compose.prod.yml up -d
 ```
 
-Sizing, scaling and SEO tips: [docs/deployment.md](docs/deployment.md).
+Sizing, updates and SEO for public instances: [docs/deployment.md](docs/deployment.md).
 
 ## ⚙️ Configuration
 
 | Variable | Default | Description |
 |---|---|---|
-| `SITE_URL` | `http://localhost:8080` | Public URL — used for canonical links, sitemap and social cards |
+| `SITE_URL` | `http://localhost:8080` | Public URL, used for canonical links, the sitemap and social cards |
 | `JOB_TTL_SECONDS` | `3600` | Files are permanently deleted after this many seconds |
 | `MAX_FILE_MB` / `MAX_TOTAL_MB` / `MAX_FILES` | `200` / `500` / `60` | Upload limits |
 | `RATE_LIMIT_PER_MINUTE` | `40` | New jobs per client per minute |
 | `API_RATE_LIMIT_PER_MINUTE` | `600` | All API requests per client per minute |
-| `MAX_ACTIVE_JOBS_PER_CLIENT` | `4` | Jobs a single client may run at once |
+| `MAX_ACTIVE_JOBS_PER_CLIENT` | `4` | Jobs one client may run at once |
 | `JOB_TIMEOUT_SECONDS` / `JOB_MEMORY_MB` | `900` / `3072` | Hard time and memory limit per job |
 | `TRUST_PROXY` | `false` | Trust `X-Forwarded-For` (enable only behind your own reverse proxy) |
-| `WORKERS` | CPU count | Parallel jobs |
+| `WORKERS` | CPU count | Jobs processed in parallel |
 
-All settings: [`backend/app/config.py`](backend/app/config.py).
+Every setting is documented in [`backend/app/config.py`](backend/app/config.py).
 
 ## 🔌 REST API
 
-Every tool is available over HTTP — interactive docs at `/api/docs`.
+Every tool is available over HTTP, with interactive docs at `/api/docs`.
 
 ```bash
 curl -F tool=compress-pdf -F 'options={"level":"recommended"}' -F files=@report.pdf http://localhost:8080/api/jobs   # → {"id": "…"}
 curl http://localhost:8080/api/jobs/<id>                 # poll until "status": "done"
-curl -OJ http://localhost:8080/api/jobs/<id>/download     # get the result
+curl -OJ http://localhost:8080/api/jobs/<id>/download     # download the result
 ```
 
 Tool ids, options and examples: [docs/api.md](docs/api.md).
 
 ## 🛡️ Security
 
-PDFVana treats every upload as hostile. Jobs run in isolated processes with memory and time limits; uploads are
-content-verified; HTML is sanitised and Pandoc sandboxed; SSRF, XSS, CSRF and argument injection are blocked; containers
-are read-only with all capabilities dropped. Every control has an automated attack test, and the code is scanned by
-CodeQL, Trivy, pip-audit, npm audit and OpenSSF Scorecard.
+PDFVana treats every upload as hostile:
+- **Isolation.** Jobs run in separate processes with memory and time limits.
+- **Validation.** Uploads are content-checked, HTML is sanitised and document converters run sandboxed.
+- **Attack prevention.** SSRF, XSS, CSRF and argument injection are blocked.
+- **Hardened deployment.** Containers run read-only with every Linux capability dropped.
 
-→ [Security policy](SECURITY.md) · [Threat model](docs/security.md)
+Each control has an automated attack test.
+
+→ [Security policy](SECURITY.md) · [Threat model](docs/security.md) · Report vulnerabilities privately through
+[GitHub security advisories](https://github.com/divyakush2006/pdfvana/security/advisories/new).
 
 ## 🏗️ Architecture
 
 ```
-Browser (React · TypeScript · Tailwind · in-browser PDF previews)
+Browser (React · TypeScript · Tailwind CSS · in-browser PDF previews)
    │  HTTPS: upload → job id → poll → download
    ▼
 PDFVana engine (Python · FastAPI)                       Conversion service (internal only)
@@ -168,97 +203,99 @@ PDFVana engine (Python · FastAPI)                       Conversion service (int
 
 Details: [docs/architecture.md](docs/architecture.md).
 
-## 🧪 Development
+## 📚 Documentation
 
-```bash
-docker compose up -d converter
-docker build --target engine -t pdfvana-engine .
-docker run --rm -p 8080:8000 --network pdfvana_default -e CONVERTER_URL=http://converter:3000 \
-  -v "$PWD/backend/app:/app/app" pdfvana-engine            # backend with your local code
-
-cd frontend && npm install && npm run dev                   # UI with hot reload on :5173
-
-docker build --target test -t pdfvana-test .                # 120+ unit, end-to-end & security tests
-docker run --rm --network pdfvana_default -e BASE_URL=http://app:8000 pdfvana-test
-```
-
-Python dependencies are declared in `backend/requirements.in` and locked, with hashes, in `backend/requirements.txt`.
-After changing a `.in` file, regenerate its lock with
-`pip-compile --generate-hashes --allow-unsafe --strip-extras --no-emit-index-url backend/requirements.in`
-(run it on Linux with Python 3.12, for example inside `python:3.12-slim-bookworm`).
+| Guide | What it covers |
+|---|---|
+| [Deployment](docs/deployment.md) | Production setup with HTTPS, sizing, updates and SEO for public instances |
+| [REST API](docs/api.md) | Endpoints, every tool id and its options, examples |
+| [Architecture](docs/architecture.md) | How the engine, job queue and conversion service fit together |
+| [Security](docs/security.md) | Threat model and the control behind each threat |
+| [Contributing](CONTRIBUTING.md) | Local development, tests and project layout |
+| [Changelog](CHANGELOG.md) | What changed in every release |
 
 ## 🗺️ Roadmap
 
 - [x] 49 tools across PDF, documents, images, audio, video and data
 - [x] Document Studio workflows and Universal Converter
-- [x] REST API, Docker images, one-command HTTPS deployment
-- [x] Process isolation and full security test suite
-- [ ] In-browser PDF editor (add/edit text, shapes, annotations)
-- [ ] Fillable PDF forms (detect, create, fill)
-- [ ] Interface translations (Hindi first, then 20+ languages)
+- [x] REST API, multi-architecture Docker images and one-command HTTPS deployment
+- [x] Per-job process isolation and a full security test suite
+- [ ] In-browser PDF editor: add and edit text, shapes and annotations
+- [ ] Fillable PDF forms: detect, create and fill
+- [ ] Interface translations, starting with Hindi
 - [ ] Installable app (PWA) and desktop builds
 - [ ] Optional self-hosted AI: summarise, translate and chat with documents
 
-Have an idea? [Open a feature request](https://github.com/divyakush2006/pdfvana/issues/new?template=feature_request.yml) or
+Have an idea? [Request a feature](https://github.com/divyakush2006/pdfvana/issues/new?template=feature_request.yml) or
 join the [discussions](https://github.com/divyakush2006/pdfvana/discussions).
 
 ## ❓ FAQ
 
 <details>
 <summary><b>Is PDFVana a free alternative to iLovePDF?</b></summary>
+<br/>
 
-Yes. PDFVana covers the everyday iLovePDF tools — merge, split, compress, PDF ↔ Word/PowerPoint/Excel/JPG, OCR, sign,
-watermark, page numbers, protect, unlock, redact, compare, PDF/A — plus workflows, and it is free with no task limits,
-watermarks or account.
+Yes. PDFVana covers the everyday iLovePDF tools: merge, split, compress, PDF to and from Word, PowerPoint, Excel and JPG,
+OCR, sign, watermark, page numbers, protect, unlock, redact, compare and PDF/A. It adds workflows, and it is free with no
+task limits, watermarks or account.
 </details>
 
 <details>
 <summary><b>Is it an open-source alternative to Smallpdf, Adobe Acrobat online or CloudConvert?</b></summary>
+<br/>
 
-Yes. Beyond PDF tools it converts documents, images (including HEIC, AVIF, SVG and ICO), audio and video — 175 input
+Yes. Beyond PDF tools it converts documents, images (including HEIC, AVIF, SVG and ICO), audio and video: 175 input
 formats in one self-hosted app, under the Apache-2.0 licence.
 </details>
 
 <details>
 <summary><b>Are my files safe and private?</b></summary>
+<br/>
 
-When you self-host, files never leave your server. Inputs are deleted as soon as processing ends, results after one hour
-(or instantly with "Delete now"), nothing survives a restart, and there is no tracking. See the
+When you self-host, files never leave your server. Inputs are deleted as soon as processing ends, and results after one
+hour (or instantly with "Delete now"). Nothing survives a restart, and there is no tracking. See the
 [threat model](docs/security.md).
 </details>
 
 <details>
 <summary><b>Can I use it at work or in a commercial product?</b></summary>
+<br/>
 
 Yes. Apache-2.0 allows commercial use, modification and redistribution. Keep the licence and notice files.
 </details>
 
 <details>
 <summary><b>Does it work offline or in an air-gapped network?</b></summary>
+<br/>
 
-Yes. Everything runs in two containers on your own hardware. Only "web page → PDF/screenshot" needs internet access to
-reach the page you ask for.
+Yes. Everything runs in two containers on your own hardware. Only "web page to PDF" and website screenshots need internet
+access, to reach the page you ask for.
 </details>
 
 <details>
 <summary><b>How does it compare with other self-hosted PDF tools?</b></summary>
+<br/>
 
 PDFVana has no paid tier and no telemetry, uses a permissive licence, and goes beyond PDFs with image, audio, video and
-data conversion, a Universal Converter, Document Studio workflows and 83 SEO-ready conversion pages for public instances.
+data conversion, a Universal Converter, Document Studio workflows and 83 ready-made conversion pages for public instances.
 </details>
 
-## 🤝 Contributing
+## 💬 Community and support
 
-Contributions of every size are welcome — bug reports, new tools, translations, docs and design. Start with
-[CONTRIBUTING.md](CONTRIBUTING.md) and look for issues labelled
-[`good first issue`](https://github.com/divyakush2006/pdfvana/labels/good%20first%20issue). Please report vulnerabilities
-privately as described in [SECURITY.md](SECURITY.md).
+- **Questions and ideas:** [GitHub Discussions](https://github.com/divyakush2006/pdfvana/discussions)
+- **Bug reports and feature requests:** [GitHub Issues](https://github.com/divyakush2006/pdfvana/issues/new/choose)
+- **Security reports:** privately, as described in [SECURITY.md](SECURITY.md)
+
+Feedback shapes the roadmap. If something is missing or could work better, please open an issue.
 
 ## ⭐ Support the project
 
-If PDFVana saves you time or money, **please [star the repository](https://github.com/divyakush2006/pdfvana/stargazers)** —
-it is the single best way to help others discover a free alternative. Sharing it with your team or community helps too.
+If PDFVana saves you time or money, **[star the repository](https://github.com/divyakush2006/pdfvana/stargazers)**.
+It is the simplest way to help others find a free, private alternative. Sharing it with your team or community helps too.
 
 ## 📄 License
 
-[Apache License 2.0](LICENSE) · Copyright © 2026 Divyakush ([@divyakush2006](https://github.com/divyakush2006))
+PDFVana is released under the [Apache License 2.0](LICENSE).<br/>
+Copyright © 2026 Divyakush ([@divyakush2006](https://github.com/divyakush2006)).
+
+<div align="right"><a href="#pdfvana">↑ Back to top</a></div>

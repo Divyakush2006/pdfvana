@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- README redesigned: key capabilities, a light/dark hero screenshot, a teams and enterprises section, a documentation
+  index and a community section. Development instructions moved to CONTRIBUTING.md.
 - Conversion pages for PDF to DOCX, DOCX to PDF, PPTX to PDF, PDF to PPTX, DOC to PDF, PPT to PDF and ODT to PDF,
   with document-specific guidance and a link to the matching tool for more options.
 
