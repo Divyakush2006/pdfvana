@@ -39,6 +39,8 @@ jobs:
     needs: lint
     env:
       RATE_LIMIT_PER_MINUTE: "100000"
+      API_RATE_LIMIT_PER_MINUTE: "100000"
+      MAX_ACTIVE_JOBS_PER_CLIENT: "1000"
     steps:
       - uses: actions/checkout@v7
       - uses: docker/setup-buildx-action@v4

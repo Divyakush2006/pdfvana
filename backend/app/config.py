@@ -29,5 +29,18 @@ MAX_FILE_MB = _int("MAX_FILE_MB", 200)
 MAX_TOTAL_MB = _int("MAX_TOTAL_MB", 500)
 MAX_FILES = _int("MAX_FILES", 60)
 WORKERS = _int("WORKERS", max(2, (os.cpu_count() or 2)))
-RATE_LIMIT_PER_MINUTE = _int("RATE_LIMIT_PER_MINUTE", 40)
+RATE_LIMIT_PER_MINUTE = _int("RATE_LIMIT_PER_MINUTE", 40)          # new jobs per client per minute
+API_RATE_LIMIT_PER_MINUTE = _int("API_RATE_LIMIT_PER_MINUTE", 600)  # all /api requests per client per minute
 SUBPROCESS_TIMEOUT = _int("SUBPROCESS_TIMEOUT", 900)
+
+# Abuse & resource protection
+JOB_TIMEOUT_SECONDS = _int("JOB_TIMEOUT_SECONDS", 900)        # wall clock per job, then the job is killed
+JOB_MEMORY_MB = _int("JOB_MEMORY_MB", 3072)                  # memory ceiling per job process
+MAX_OUTPUT_MB = _int("MAX_OUTPUT_MB", 4096)                  # largest file a job may write
+MAX_ACTIVE_JOBS_PER_CLIENT = _int("MAX_ACTIVE_JOBS_PER_CLIENT", 4)
+MAX_QUEUED_JOBS = _int("MAX_QUEUED_JOBS", 200)               # server-wide backlog before answering "busy"
+MAX_CONCURRENT_UPLOADS = _int("MAX_CONCURRENT_UPLOADS", 32)
+MIN_FREE_DISK_MB = _int("MIN_FREE_DISK_MB", 1024)
+MAX_MEDIA_MINUTES = _int("MAX_MEDIA_MINUTES", 180)
+# Extra origins (comma-separated) allowed to submit jobs from a browser, e.g. "https://intranet.example.com".
+ALLOWED_ORIGINS = {o.strip().rstrip("/") for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o.strip()}

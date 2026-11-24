@@ -83,7 +83,9 @@ def _paper(opts: dict) -> dict:
 
 
 def html_to_pdf(index_html: Path, dst: Path, assets: list[Path] | None = None, opts: dict | None = None) -> Path:
-    files = [("files", ("index.html", index_html.read_bytes(), "text/html"))]
+    from .security import sanitize_html
+
+    files = [("files", ("index.html", sanitize_html(index_html.read_bytes()).encode("utf-8"), "text/html"))]
     for a in assets or []:
         files.append(("files", (a.name, a.read_bytes(), "application/octet-stream")))
     dst.write_bytes(_service("/forms/chromium/convert/html", files, _paper(opts or {"margin": "none", "screen_css": False})))
@@ -125,7 +127,10 @@ def url_to_image(url: str | None, html_file: Path | None, dst: Path, fmt: str = 
         data["url"] = check_public_url(url)
         content = _service("/forms/chromium/screenshot/url", [], data)
     else:
-        content = _service("/forms/chromium/screenshot/html", [("files", ("index.html", html_file.read_bytes(), "text/html"))], data)
+        from .security import sanitize_html
+
+        page = sanitize_html(html_file.read_bytes()).encode("utf-8")
+        content = _service("/forms/chromium/screenshot/html", [("files", ("index.html", page, "text/html"))], data)
     dst.write_bytes(content)
     return dst
 
@@ -219,10 +224,12 @@ def images_to_pdf(images: list[Path], dst: Path, page_size: str = "fit", orienta
 
 
 def _pandoc_to_html(src: Path, fmt: str, dst: Path) -> Path:
-    css = dst.with_suffix(".css")
-    css.write_text(DOC_CSS, encoding="utf-8")
-    run(["pandoc", str(src), "-f", fmt, "-t", "html5", "-s", "--embed-resources",
-         "-c", str(css), "--metadata", f"pagetitle={stem(src.name)}", "-o", str(dst)], timeout=300)
+    # --sandbox: the document can't make pandoc read other files or fetch URLs (include directives, images…)
+    run(["pandoc", "--sandbox", str(src), "-f", fmt, "-t", "html5", "-s", "--embed-resources",
+         "--metadata", f"pagetitle={stem(src.name)}", "-o", str(dst)], timeout=300)
+    page = dst.read_text(encoding="utf-8", errors="replace")
+    page = page.replace("</head>", f"<style>{DOC_CSS}</style></head>", 1) if "</head>" in page else f"<style>{DOC_CSS}</style>{page}"
+    dst.write_text(page, encoding="utf-8")
     return dst
 
 

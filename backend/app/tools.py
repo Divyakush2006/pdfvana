@@ -170,7 +170,7 @@ def convert_any(path: Path, name: str, fmt: str, workdir: Path, opts: dict, prog
         return [datamod.convert_table(path, name, workdir, fmt)]
     if e in PANDOC_IN and fmt in PANDOC_OUT and e != fmt and not (e in ("html", "htm") and fmt == "html"):
         dst = workdir / f"{base}.{fmt}"
-        args = ["pandoc", str(path), "-f", PANDOC_IN[e], "-t", PANDOC_OUT[fmt], "-s", "-o", str(dst)]
+        args = ["pandoc", "--sandbox", str(path), "-f", PANDOC_IN[e], "-t", PANDOC_OUT[fmt], "-s", "-o", str(dst)]
         if fmt == "html":
             args += ["--embed-resources", "--metadata", f"pagetitle={base}"]
         run(args, timeout=300)
@@ -1071,27 +1071,58 @@ TOOLS: list[Tool] = [
 TOOLS_BY_ID = {t.id: t for t in TOOLS}
 
 
+TEXT_LIMITS = {"text": 2000, "textarea": 20000, "password": 256, "pages": 500, "color": 9, "position": 20}
+MAX_STEPS, MAX_LAYOUT = 25, 20000
+
+
+def _json_list(value: Any, limit: int, label: str) -> list:
+    if value in (None, ""):
+        return []
+    if isinstance(value, str):
+        if len(value) > 1_000_000:
+            raise ToolError(f"The {label} is too large.")
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError as exc:
+            raise ToolError(f"The {label} is not valid.") from exc
+    if not isinstance(value, list) or len(value) > limit or not all(isinstance(v, dict) for v in value):
+        raise ToolError(f"The {label} is not valid.")
+    return value
+
+
 def coerce_options(tool: Tool, raw: dict) -> dict:
-    """Type-coerce user options against the tool schema, filling in defaults."""
+    """Validate user options strictly against the tool schema: known keys only, values of the declared type,
+    numbers clamped to their range, choices restricted to the allowed list, text length-limited."""
     out: dict[str, Any] = {}
     for opt in tool.options:
         val = raw.get(opt.id, opt.default)
+        allowed = {str(c["value"]) for c in opt.choices} if opt.choices else None
         try:
-            if opt.type == "checkbox":
+            if opt.id in ("steps", "layout"):
+                val = json.dumps(_json_list(val, MAX_STEPS if opt.id == "steps" else MAX_LAYOUT, opt.id))
+            elif opt.type == "checkbox":
                 val = val if isinstance(val, bool) else str(val).lower() in ("1", "true", "on", "yes")
             elif opt.type in ("number", "range"):
                 val = float(val) if val not in (None, "") else opt.default
-                if opt.min is not None:
-                    val = max(opt.min, val)
-                if opt.max is not None:
-                    val = min(opt.max, val)
+                if val is not None:
+                    if val != val or val in (float("inf"), float("-inf")):  # NaN / infinity
+                        val = opt.default
+                    else:
+                        if opt.min is not None:
+                            val = max(opt.min, val)
+                        if opt.max is not None:
+                            val = min(opt.max, val)
             elif opt.type == "multiselect":
-                val = val if isinstance(val, list) else [v for v in str(val or "").split(",") if v]
-            elif val is not None and not isinstance(val, str):
-                val = val if opt.id in ("steps", "layout") else str(val)
+                items = val if isinstance(val, list) else [v for v in str(val or "").split(",") if v]
+                items = [str(v)[:40] for v in items][:100]
+                val = [v for v in items if v in allowed] if allowed else items
+            elif opt.type in ("select", "position"):
+                val = "" if val is None else str(val)
+                if allowed is not None and val not in allowed:
+                    val = opt.default
+            else:
+                val = "" if val is None else str(val)[: TEXT_LIMITS.get(opt.type, 2000)]
         except (TypeError, ValueError):
             val = opt.default
         out[opt.id] = val
-    for k, v in raw.items():  # pass through unknown keys (e.g. studio extras) as plain values
-        out.setdefault(k, v)
     return out

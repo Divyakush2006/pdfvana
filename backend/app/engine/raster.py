@@ -29,10 +29,17 @@ def open_doc(path: Path | bytes, password: str | None = None) -> pdfium.PdfDocum
         raise ToolError("This file is not a valid PDF or is damaged. Try the Repair tool first.") from exc
 
 
+MAX_RENDER_PIXELS = 60_000_000  # e.g. A4 at 600 dpi is ~35 MP; giant pages are scaled down instead of exhausting memory
+
+
 def render(page: pdfium.PdfPage, dpi: float = 150, grayscale: bool = False):
     """Render a page (crop box, rotation applied) to a PIL image."""
     dpi = max(18.0, min(float(dpi), 600.0))
-    bitmap = page.render(scale=dpi / 72.0, grayscale=grayscale, may_draw_forms=True)
+    w, h = page.get_size()
+    scale = dpi / 72.0
+    if w * h * scale * scale > MAX_RENDER_PIXELS:
+        scale = (MAX_RENDER_PIXELS / max(w * h, 1.0)) ** 0.5
+    bitmap = page.render(scale=scale, grayscale=grayscale, may_draw_forms=True)
     img = bitmap.to_pil()
     return img.convert("L" if grayscale else "RGB")
 

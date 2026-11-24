@@ -23,7 +23,7 @@ try:  # HEIC / HEIF (iPhone photos) and AVIF support
 except Exception:  # pragma: no cover
     pass
 
-Image.MAX_IMAGE_PIXELS = 200_000_000  # allow big scans but stop decompression bombs
+Image.MAX_IMAGE_PIXELS = 120_000_000  # big scans are fine; decompression bombs (>240 MP) are refused
 
 PIL_FORMAT = {"jpg": "JPEG", "jpeg": "JPEG", "png": "PNG", "webp": "WEBP", "avif": "AVIF", "gif": "GIF", "bmp": "BMP",
               "tiff": "TIFF", "tif": "TIFF", "ico": "ICO"}
@@ -343,20 +343,45 @@ AUDIO_BITRATE = {"high": "256k", "medium": "160k", "low": "96k"}
 RESOLUTIONS = {"2160": 2160, "1440": 1440, "1080": 1080, "720": 720, "480": 480, "360": 360}
 
 
+# Real media containers only. Playlists (HLS/DASH), concat lists, image sequences, device and network
+# demuxers are refused: a ".mp4" that is really a playlist could otherwise make ffmpeg read server files
+# or internal URLs.
+SAFE_DEMUXERS = {"mov", "mp4", "m4a", "3gp", "3g2", "mj2", "matroska", "webm", "avi", "flv", "mpeg", "mpegts",
+                 "mpegvideo", "ogg", "wav", "w64", "mp3", "flac", "aac", "asf", "aiff", "amr", "gif", "ac3", "eac3",
+                 "dts", "wv", "ape", "caf", "mxf", "dv", "m4v", "h264", "hevc", "nut", "opus", "mpc"}
+FF_INPUT = ["-protocol_whitelist", "file"]
+
+
 def probe(src: Path) -> dict:
+    from .config import MAX_MEDIA_MINUTES
+
     try:
-        out = run(["ffprobe", "-v", "error", "-print_format", "json", "-show_format", "-show_streams", str(src)], timeout=60).stdout
-        return json.loads(out or "{}")
+        out = run(["ffprobe", "-v", "error", "-protocol_whitelist", "file", "-print_format", "json",
+                   "-show_format", "-show_streams", str(src)], timeout=60).stdout
+        info = json.loads(out or "{}")
     except Exception as exc:
         raise ToolError(f"'{src.name}' is not a readable audio or video file.") from exc
+    demuxers = set((info.get("format", {}).get("format_name") or "").split(","))
+    if not demuxers & SAFE_DEMUXERS:
+        raise ToolError(f"'{src.name}' is not a supported audio or video file.")
+    try:
+        duration = float(info.get("format", {}).get("duration") or 0)
+    except ValueError:
+        duration = 0
+    if duration > MAX_MEDIA_MINUTES * 60:
+        raise ToolError(f"'{src.name}' is longer than {MAX_MEDIA_MINUTES} minutes, the maximum per file.")
+    return info
 
 
 def _trim_args(opts: dict) -> list[str]:
+    from .security import media_time
+
     args = []
-    if str(opts.get("start") or "").strip():
-        args += ["-ss", str(opts["start"]).strip()]
-    if str(opts.get("end") or "").strip():
-        args += ["-to", str(opts["end"]).strip()]
+    start, end = media_time(opts.get("start")), media_time(opts.get("end"))
+    if start:
+        args += ["-ss", start]
+    if end:
+        args += ["-to", end]
     return args
 
 
@@ -375,12 +400,12 @@ def convert_media(src: Path, dst_dir: Path, base: str, fmt: str, opts: dict) -> 
     dst = dst_dir / f"{base}.{fmt}"
     q = opts.get("quality", "medium")
     trim = _trim_args(opts)
-    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"] + trim + ["-i", str(src)]
+    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-nostdin"] + FF_INPUT + trim + ["-i", str(src)]
     if fmt == "gif":
-        fps = int(opts.get("fps") or 12)
-        width = int(opts.get("gif_width") or 480)
+        fps = max(1, min(int(opts.get("fps") or 12), 30))
+        width = max(80, min(int(opts.get("gif_width") or 480), 1280))
         vf = f"fps={fps},scale={width}:-2:flags=lanczos,split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4"
-        cmd += ["-filter_complex", vf, "-loop", "0", str(dst)]
+        cmd += ["-t", "60", "-filter_complex", vf, "-loop", "0", str(dst)]  # GIFs are capped at one minute
     elif cat == "audio":
         cmd += ["-vn"]
         codec = {"mp3": ["-c:a", "libmp3lame", "-b:a", AUDIO_BITRATE.get(q, "160k")],
@@ -425,7 +450,7 @@ def compress_video(src: Path, dst_dir: Path, base: str, level: str = "medium", r
     res = RESOLUTIONS.get(str(resolution))
     vf = ["-vf", f"scale=-2:'trunc(min({res},ih)/2)*2'" if res else "scale='trunc(iw/2)*2':'trunc(ih/2)*2'"]
     has_audio = any(s.get("codec_type") == "audio" for s in probe(src).get("streams", []))
-    cmd = (["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src)] + vf +
+    cmd = (["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-nostdin"] + FF_INPUT + ["-i", str(src)] + vf +
            ["-c:v", "libx264", "-preset", "medium", "-crf", str(crf), "-pix_fmt", "yuv420p"] +
            (["-c:a", "aac", "-b:a", "128k"] if has_audio else ["-an"]) + ["-movflags", "+faststart", str(dst)])
     try:
