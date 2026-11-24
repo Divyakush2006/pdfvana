@@ -13,7 +13,7 @@ Merge, split, compress, convert, OCR, sign and protect, with no sign-up, no wate
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-4f46e5.svg)](LICENSE)
 [![CI](https://github.com/divyakush2006/pdfvana/actions/workflows/ci.yml/badge.svg)](https://github.com/divyakush2006/pdfvana/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/divyakush2006/pdfvana/actions/workflows/codeql.yml/badge.svg)](https://github.com/divyakush2006/pdfvana/actions/workflows/codeql.yml)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/divyakush2006/pdfvana/badge)](https://securityscorecards.dev/viewer/?uri=github.com/divyakush2006/pdfvana)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Divyakush2006/pdfvana/badge)](https://scorecard.dev/viewer/?uri=github.com/Divyakush2006/pdfvana)
 [![Docker image](https://img.shields.io/badge/docker-amd64%20%7C%20arm64-2496ED?logo=docker&logoColor=white)](https://github.com/divyakush2006/pdfvana/pkgs/container/pdfvana)
 [![GitHub stars](https://img.shields.io/github/stars/divyakush2006/pdfvana?style=flat&color=7c3aed&logo=github)](https://github.com/divyakush2006/pdfvana/stargazers)
 
