@@ -1,6 +1,6 @@
 [project]
 name = "pdfvana"
-version = "1.0.0"
+version = "1.1.0"
 description = "Free and open-source PDF tools and universal file converter"
 license = "Apache-2.0"
 requires-python = ">=3.12"
