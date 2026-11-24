@@ -42,6 +42,7 @@ export type Seo = {
   intro: string;
   steps: string[];
   faqs: { q: string; a: string }[];
+  related?: { slug: string; name: string } | null;
 };
 
 export type Pair = Seo & { slug: string; from: string; to: string; accept: string[] };

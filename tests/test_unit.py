@@ -75,3 +75,15 @@ def test_view_top_left_is_visible_top_left():
     geo90 = g.PageGeometry(0, 0, 600, 800, 90)
     assert (geo90.width, geo90.height) == (800, 600)
     assert geo90.view_to_user(0, 0) == (0, 0)  # rotated 90° clockwise: user origin appears top-left
+
+
+def test_conversion_pairs_are_unique_reachable_and_supported():
+    from app import formats as F
+    from app.tools import TOOLS_BY_ID
+
+    slugs = [F.pair_slug(a, b) for a, b in F.PAIRS]
+    assert len(slugs) == len(set(slugs)), "duplicate conversion page"
+    assert not set(slugs) & set(TOOLS_BY_ID), "a conversion page would be hidden by a tool with the same URL"
+    for a, b in F.PAIRS:
+        assert a in F.all_input_ext(), a
+        assert b in F.TARGETS[F.category(f"x.{a}")], f"{a} -> {b} is not a supported conversion"

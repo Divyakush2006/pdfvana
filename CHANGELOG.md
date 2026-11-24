@@ -5,6 +5,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Conversion pages for PDF to DOCX, DOCX to PDF, PPTX to PDF, PDF to PPTX, DOC to PDF, PPT to PDF and ODT to PDF,
+  with document-specific guidance and a link to the matching tool for more options.
+
+### Fixed
+- The PDF to SVG conversion page shared its address with the PDF to SVG tool, so it could never be shown and the
+  sitemap listed the address twice. A new test now rejects duplicate or clashing conversion pages.
+
 ### Security
 - The runtime image no longer ships a package manager or build tools (pip, setuptools, wheel), removing the last
   vulnerability reported by the container scan.

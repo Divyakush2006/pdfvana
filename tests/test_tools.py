@@ -281,6 +281,29 @@ def test_universal_converter(api, src, fmt):
     assert s["result"]["name"].endswith((f".{fmt}", ".zip"))
 
 
+def test_docx_to_pdf_page_keeps_content(api):
+    """/docx-to-pdf runs the Universal Converter with PDF preselected."""
+    s, d = ok(api.run("convert", ["report.docx"], {"format": "pdf"}))
+    assert s["result"]["name"] == "report.pdf"
+    text = pdf_text(d)
+    assert "Quarterly report" in text and "Revenue grew 24%" in text and "R2C2" in text
+
+
+def test_pptx_to_pdf_page_one_page_per_slide(api):
+    s, d = ok(api.run("convert", ["deck.pptx"], {"format": "pdf"}))
+    assert s["result"]["name"] == "deck.pdf"
+    assert pdf_pages(d) == 1 and "Roadmap 2027" in pdf_text(d)
+
+
+def test_pdf_to_docx_page_is_editable(api):
+    from docx import Document
+
+    s, d = ok(api.run("convert", ["a.pdf"], {"format": "docx"}))
+    assert s["result"]["name"] == "a.docx"
+    doc = Document(io.BytesIO(d))
+    assert "Document A" in "\n".join(p.text for p in doc.paragraphs) and doc.tables
+
+
 def test_universal_rejects_impossible(api):
     s, _ = api.run("convert", ["tone.wav"], {"format": "docx"})
     assert s["status"] == "error"

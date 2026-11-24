@@ -75,6 +75,18 @@ function SeoSection({ seo }: { seo: Seo }) {
           </details>
         ))}
       </div>
+      {seo.related && (
+        <Link
+          to={`/${seo.related.slug}`}
+          className="card mt-8 flex items-center justify-between gap-4 p-5 transition hover:border-brand-300 hover:shadow-md"
+        >
+          <span>
+            <span className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Need more options?</span>
+            <span className="mt-1 block font-semibold">Try {seo.related.name}</span>
+          </span>
+          <ArrowRight className="h-5 w-5 shrink-0 text-brand-600" />
+        </Link>
+      )}
     </section>
   );
 }

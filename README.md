@@ -67,7 +67,7 @@ Open **http://localhost:8080** 🎉 — requires [Docker](https://docs.docker.co
 
 ## 🧰 Features
 
-**49 tools · 175 input formats · 2,600+ format combinations · 77 one-click conversion pages** (e.g. `/heic-to-jpg`, `/png-to-ico`, `/mp4-to-mp3`).
+**49 tools · 175 input formats · 2,600+ format combinations · 83 one-click conversion pages** (e.g. `/pdf-to-docx`, `/docx-to-pdf`, `/heic-to-jpg`, `/mp4-to-mp3`).
 
 | Category | What you can do |
 |---|---|
@@ -239,7 +239,7 @@ reach the page you ask for.
 <summary><b>How does it compare with other self-hosted PDF tools?</b></summary>
 
 PDFVana has no paid tier and no telemetry, uses a permissive licence, and goes beyond PDFs with image, audio, video and
-data conversion, a Universal Converter, Document Studio workflows and 77 SEO-ready conversion pages for public instances.
+data conversion, a Universal Converter, Document Studio workflows and 83 SEO-ready conversion pages for public instances.
 </details>
 
 ## 🤝 Contributing
