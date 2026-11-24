@@ -6,6 +6,8 @@
 
 ### Free & open-source PDF tools and universal file converter
 
+*Vana (वन) is Sanskrit for "forest" — PDFVana is a forest of free tools for every document, image and media file.*
+
 **Merge, split, compress, sign, protect and OCR PDFs — and convert anything to anything:**
 Word, PowerPoint, Excel, images (JPG, PNG, WebP, HEIC, AVIF, SVG, ICO), audio and video.
 No sign-up. No watermarks. No limits. Self-host it in one command.

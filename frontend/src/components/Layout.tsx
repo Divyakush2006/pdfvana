@@ -130,6 +130,7 @@ export function Footer() {
             Professional PDF, document, image and media tools — free for everyone. No sign-up, no watermarks, no limits, and your files
             are deleted automatically.
           </p>
+          <p className="mt-2 max-w-sm text-xs italic text-slate-500">Vana (वन) is Sanskrit for “forest” — a forest of free tools for every file.</p>
           {catalog?.repo && (
             <a href={catalog.repo} className="btn-outline mt-4 px-3 py-2" target="_blank" rel="noreferrer">
               <Github className="h-4 w-4" /> Star us on GitHub
