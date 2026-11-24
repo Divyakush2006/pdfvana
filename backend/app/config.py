@@ -10,7 +10,7 @@ def _int(name: str, default: int) -> int:
         return default
 
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 BRAND_NAME = os.getenv("BRAND_NAME", "PDFVana")
 # Public URL of this deployment, used for canonical links, sitemap.xml and social cards.
 SITE_URL = os.getenv("SITE_URL", "http://localhost:8080")
