@@ -37,6 +37,18 @@ docker build --target test -t pdfvana-test .
 docker run --rm --network pdfvana_default -e BASE_URL=http://app:8000 pdfvana-test
 ```
 
+### Dependencies
+
+Python dependencies are declared in `.in` files (`backend/requirements.in`, `tests/requirements.in`,
+`.github/ci-requirements.in`) and locked, with hashes, in the matching `.txt` files. After changing a `.in` file,
+regenerate its lock, for example:
+
+```bash
+pip-compile --generate-hashes --allow-unsafe --strip-extras --no-emit-index-url backend/requirements.in
+```
+
+Run it on Linux with Python 3.12, for example inside `python:3.12-slim-bookworm`, so the hashes match the image.
+
 ## Project layout
 
 | Path | Contents |
