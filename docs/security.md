@@ -39,7 +39,7 @@ the internet and only ever receives sanitised input.
 | Disk exhaustion | Free-space guard before accepting jobs; per-job output cap; automatic deletion | `main._admit`, `worker`, `jobs._janitor` |
 | Information disclosure | Generic error messages to users, details only in server logs; no server banner; no stack traces in responses | `jobs`, Dockerfile |
 | Container escape / lateral movement | Non-root user, read-only root filesystem, `cap_drop: ALL`, `no-new-privileges`, pids and memory limits | Dockerfile, compose files |
-| Supply chain | Checksum-verified Pandoc download; Dependabot; pip-audit & npm audit; Trivy image scan; CodeQL; OpenSSF Scorecard; protected `main` with required checks | `.github/` |
+| Supply chain | Base images pinned by digest, GitHub Actions pinned by commit, every Python package pinned and hash-verified; checksum-verified Pandoc download; Dependabot; pip-audit & npm audit; Trivy image scan; CodeQL; OpenSSF Scorecard; protected `main` with required checks | `.github/` |
 | Data retention | Inputs deleted when processing ends, results after `JOB_TTL_SECONDS`, everything wiped on start | `jobs` |
 
 ## Operating securely

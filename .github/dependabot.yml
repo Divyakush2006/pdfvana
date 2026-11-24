@@ -9,6 +9,13 @@ updates:
     groups:
       python-minor-patch:
         update-types: [minor, patch]
+  - package-ecosystem: pip
+    directories: [/tests, /.github]
+    schedule:
+      interval: monthly
+    groups:
+      tooling:
+        patterns: ["*"]
   - package-ecosystem: npm
     directory: /frontend
     schedule:

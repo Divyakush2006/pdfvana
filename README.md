@@ -182,6 +182,11 @@ docker build --target test -t pdfvana-test .                # 120+ unit, end-to-
 docker run --rm --network pdfvana_default -e BASE_URL=http://app:8000 pdfvana-test
 ```
 
+Python dependencies are declared in `backend/requirements.in` and locked, with hashes, in `backend/requirements.txt`.
+After changing a `.in` file, regenerate its lock with
+`pip-compile --generate-hashes --allow-unsafe --strip-extras --no-emit-index-url backend/requirements.in`
+(run it on Linux with Python 3.12, for example inside `python:3.12-slim-bookworm`).
+
 ## 🗺️ Roadmap
 
 - [x] 49 tools across PDF, documents, images, audio, video and data
