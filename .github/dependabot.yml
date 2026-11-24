@@ -27,3 +27,7 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+    ignore:
+      # The v2.6.0 image is broken upstream (ossf/scorecard-action#1752); later releases are still offered.
+      - dependency-name: ossf/scorecard-action
+        versions: ["2.6.0"]
