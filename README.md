@@ -132,7 +132,7 @@ Sanitize PDF · Compare PDF · PDF to Markdown
 | **Access control** | PDFVana has no user accounts to manage. Put it behind your existing single sign-on or identity-aware proxy to restrict it to your organisation. |
 | **Integration** | Every tool is an HTTP endpoint with OpenAPI docs, ready for internal portals, back-office jobs and automation platforms. |
 | **Scale** | One container handles a team; add CPU and workers for public traffic. Sizing guidance is in the [deployment guide](docs/deployment.md#sizing). |
-| **Security assurance** | Process isolation, sandboxed converters, read-only containers, a documented [threat model](docs/security.md), and continuous CodeQL, Trivy, pip-audit, npm audit and OpenSSF Scorecard scanning. |
+| **Security assurance** | Process isolation, sandboxed converters, read-only containers and a documented [threat model](docs/security.md). Every dependency is pinned by hash, digest or commit, with continuous CodeQL, Trivy, pip-audit, npm audit and OpenSSF Scorecard scanning. |
 | **Licensing** | Apache-2.0: commercial use, modification and redistribution allowed, with an explicit patent grant. No open-core, no paid tier. |
 
 ## 🌍 Deploy to production
