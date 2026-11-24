@@ -34,6 +34,19 @@ def test_conversion_landing_page():
     assert r.status_code == 200 and "HEIC to JPG Converter" in r.text
 
 
+def test_document_conversion_pages():
+    expected = {"/pdf-to-docx": ("PDF to DOCX Converter", "/pdf-to-word"),
+                "/docx-to-pdf": ("DOCX to PDF Converter", "/word-to-pdf"),
+                "/pptx-to-pdf": ("PPTX to PDF Converter", "/powerpoint-to-pdf")}
+    for path, (h1, related) in expected.items():
+        r = get(path)
+        assert r.status_code == 200, path
+        assert f"<h1>{h1}</h1>" in r.text and f'href="{related}"' in r.text
+        assert "resolution" not in r.text  # document pages get document copy, not image copy
+    pairs = {p["slug"]: p for p in get("/api/tools").json()["pairs"]}
+    assert "docm" in pairs["docx-to-pdf"]["accept"] and pairs["pdf-to-docx"]["related"]["slug"] == "pdf-to-word"
+
+
 def test_unknown_page_is_404():
     r = get("/definitely-not-a-tool")
     assert r.status_code == 404 and r.headers.get("x-robots-tag") == "noindex"
@@ -42,6 +55,9 @@ def test_unknown_page_is_404():
 def test_sitemap_and_robots():
     sm = get("/sitemap.xml")
     assert sm.status_code == 200 and "/compress-pdf</loc>" in sm.text and "/mp4-to-mp3</loc>" in sm.text
+    locs = [part.split("</loc>")[0] for part in sm.text.split("<loc>")[1:]]
+    assert len(locs) == len(set(locs)), "every URL appears in the sitemap exactly once"
+    assert sm.text.count("/docx-to-pdf</loc>") == 1
     assert "Sitemap:" in get("/robots.txt").text
 
 

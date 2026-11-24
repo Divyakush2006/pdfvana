@@ -83,6 +83,7 @@ def all_input_ext() -> set[str]:
 
 # Popular conversions, each served at /<from>-to-<to> with its own title and description.
 PAIRS: list[tuple[str, str]] = [
+    ("pdf", "docx"), ("docx", "pdf"), ("pptx", "pdf"), ("pdf", "pptx"), ("doc", "pdf"), ("ppt", "pdf"), ("odt", "pdf"),
     ("jpg", "png"), ("png", "jpg"), ("webp", "jpg"), ("webp", "png"), ("heic", "jpg"), ("heic", "png"),
     ("png", "webp"), ("jpg", "webp"), ("avif", "jpg"), ("avif", "png"), ("png", "avif"), ("jpg", "avif"),
     ("png", "ico"), ("jpg", "ico"), ("svg", "ico"), ("png", "svg"), ("jpg", "svg"), ("svg", "png"), ("svg", "jpg"),
@@ -93,7 +94,7 @@ PAIRS: list[tuple[str, str]] = [
     ("wav", "mp3"), ("m4a", "mp3"), ("flac", "mp3"), ("ogg", "mp3"), ("mp3", "wav"), ("aac", "mp3"),
     ("opus", "mp3"), ("mp3", "ogg"), ("wma", "mp3"),
     ("csv", "xlsx"), ("xlsx", "csv"), ("json", "csv"), ("csv", "json"), ("json", "xlsx"), ("xlsx", "json"),
-    ("pdf", "svg"), ("pdf", "png"), ("pdf", "txt"), ("pdf", "epub"), ("pdf", "html"), ("pdf", "tiff"),
+    ("pdf", "png"), ("pdf", "txt"), ("pdf", "epub"), ("pdf", "html"), ("pdf", "tiff"),
     ("epub", "pdf"), ("md", "pdf"), ("txt", "pdf"), ("tiff", "pdf"), ("heic", "pdf"), ("svg", "pdf"),
     ("docx", "odt"), ("odt", "docx"), ("docx", "md"), ("md", "docx"), ("html", "docx"), ("rtf", "docx"),
     ("pptx", "png"), ("docx", "jpg"), ("xlsx", "pdf"), ("csv", "pdf"),
@@ -108,5 +109,8 @@ def pair_accept(src: str) -> list[str]:
     groups = {
         "jpg": ["jpg", "jpeg", "jfif"], "tiff": ["tif", "tiff"], "heic": ["heic", "heif"], "md": ["md", "markdown"],
         "html": ["html", "htm"], "mpeg": ["mpeg", "mpg"],
+        # Word and PowerPoint pages also take the macro-enabled, template and show variants of the same format.
+        "docx": ["docx", "docm", "dotx"], "doc": ["doc", "dot"],
+        "pptx": ["pptx", "pptm", "ppsx", "potx"], "ppt": ["ppt", "pps", "pot"],
     }
     return groups.get(src, [src])

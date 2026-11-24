@@ -53,8 +53,107 @@ def tool_seo(tool) -> dict:
             "faqs": [{"q": q, "a": a} for q, a in faqs]}
 
 
+# Conversion pages name the exact file format people search for ("docx to pdf"); tool pages use the friendly name.
+PAIR_LABELS = {"docx": "DOCX", "doc": "DOC", "pptx": "PPTX", "ppt": "PPT"}
+FRIENDLY = {"docx": "Microsoft Word", "doc": "Word 97–2003", "pptx": "PowerPoint", "ppt": "PowerPoint 97–2003",
+            "odt": "OpenDocument Text"}
+WORD_LIKE = {"docx", "doc", "odt", "rtf", "txt"}
+SLIDES_LIKE = {"pptx", "ppt", "odp"}
+EDITABLE = {"docx", "pptx", "odt", "rtf"}
+
+
+def pair_label(ext: str) -> str:
+    return PAIR_LABELS.get(ext) or label(ext)
+
+
+def _named(ext: str) -> str:
+    """'DOCX (Microsoft Word)' for formats whose extension alone may not ring a bell."""
+    return f"{pair_label(ext)} ({FRIENDLY[ext]})" if ext in FRIENDLY else pair_label(ext)
+
+
+def related_tool(src: str, dst: str) -> str | None:
+    """The dedicated tool with more options for this conversion, linked from the conversion page."""
+    if dst == "pdf":
+        if src in WORD_LIKE:
+            return "word-to-pdf"
+        if src in SLIDES_LIKE:
+            return "powerpoint-to-pdf"
+        if src in F.SHEET_EXT | F.DATA_EXT:
+            return "excel-to-pdf"
+        if src in F.IMAGE_EXT:
+            return "jpg-to-pdf"
+        return "any-to-pdf"
+    if src == "pdf":
+        return {"docx": "pdf-to-word", "pptx": "pdf-to-powerpoint", "xlsx": "pdf-to-excel", "png": "pdf-to-jpg",
+                "jpg": "pdf-to-jpg", "tiff": "pdf-to-jpg", "txt": "pdf-to-text", "html": "pdf-to-text",
+                "epub": "pdf-to-text", "md": "pdf-to-markdown", "svg": "pdf-to-svg"}.get(dst)
+    return None
+
+
+def _document_pair(src: str, dst: str) -> dict | None:
+    """Copy for Office <-> PDF pages, which need different answers than image or media conversions."""
+    a, b = pair_label(src), pair_label(dst)
+    to_pdf = dst == "pdf" and (src in WORD_LIKE or src in SLIDES_LIKE)
+    from_pdf = src == "pdf" and dst in EDITABLE
+    if not (to_pdf or from_pdf):
+        return None
+    slides = src in SLIDES_LIKE or dst in SLIDES_LIKE
+    unit = "presentations" if slides else "documents"
+    if to_pdf:
+        intro = (f"Turn {_named(src)} {unit} into PDF files that look the same on every device — "
+                 "free, private and with no watermark.")
+        desc = (f"Convert {a} to PDF online for free. Fonts, images, tables and page layout are kept exactly. "
+                f"Batch conversion, no sign-up, no watermark; files deleted after {_minutes()} minutes.")
+        faqs = [
+            (f"How do I convert {a} to PDF?", f"Upload your {a} file, keep PDF selected as the output and click Convert. "
+                                              "The PDF is ready to download in seconds."),
+            ("Will my formatting stay the same?",
+             ("Yes. Every slide becomes one PDF page with its images, shapes, charts and text in place."
+              if slides else
+              "Yes. Fonts, images, tables, headers, footers and page breaks are kept. Common Microsoft fonts are replaced "
+              "with metric-compatible fonts, so lines and pages break in the same places.")),
+            (f"Can I convert several {a} files at once?", "Yes. Add as many as you like; you get one PDF per file, "
+                                                          "downloaded together as a ZIP."),
+            (f"Is the {a} to PDF converter free?", "Yes — completely free and open source, with no sign-up, "
+                                                   "no watermarks and no daily limits."),
+            ("Are my files private?", f"Yes. Files are processed in isolation, never shared and permanently deleted "
+                                      f"after {_minutes()} minutes."),
+        ]
+    else:
+        what = "editable slides with real text boxes" if dst == "pptx" else "an editable document"
+        intro = f"Turn PDFs into {what} you can change in {FRIENDLY.get(dst, b)} — free, private and with no watermark."
+        desc = (f"Convert PDF to {a} online for free: editable text with layout, tables and images preserved. "
+                f"No sign-up, no watermark; files deleted after {_minutes()} minutes.")
+        scanned = ("Scanned pages are kept as images on each slide, so they look exactly like the original."
+                   if dst == "pptx" else
+                   "Scanned pages are detected automatically and run through text recognition (OCR) first, "
+                   "so their text is editable too.")
+        faqs = [
+            (f"How do I convert PDF to {a}?", f"Upload the PDF, keep {a} selected as the output and click Convert. "
+                                              f"Open the {a} file in {FRIENDLY.get(dst, b)}, Google "
+                                              f"{'Slides' if dst == 'pptx' else 'Docs'} or LibreOffice."),
+            ("Can I edit the converted file?", f"Yes. Text comes out as real, editable "
+                                               f"{'text boxes' if dst == 'pptx' else 'paragraphs'}, with headings, "
+                                               "tables and images kept in place."),
+            ("What about scanned PDFs?", scanned),
+            (f"Is the PDF to {a} converter free?", "Yes — completely free and open source, with no sign-up, "
+                                                   "no watermarks and no daily limits."),
+            ("Are my files private?", f"Yes. Files are processed in isolation, never shared and permanently deleted "
+                                      f"after {_minutes()} minutes."),
+        ]
+    steps = [f"Upload your {a} files — add several to convert them in one go.",
+             f"{b} is already selected as the output format.",
+             f"Click “Convert” and download your {b} file (or a ZIP when you convert several)."]
+    return {"title": f"{a} to {b} Converter — Free, Accurate, No Sign-up | {BRAND_NAME}", "description": _clip(desc),
+            "h1": f"{a} to {b} Converter", "intro": intro, "steps": steps,
+            "faqs": [{"q": q, "a": x} for q, x in faqs]}
+
+
 def pair_seo(src: str, dst: str) -> dict:
-    a, b = label(src), label(dst)
+    doc = _document_pair(src, dst)
+    if doc:
+        return doc
+    a, b = pair_label(src), pair_label(dst)
     title = f"{a} to {b} Converter — Free, Unlimited, No Sign-up | {BRAND_NAME}"
     desc = (f"Convert {a} to {b} online for free. High quality, batch conversion, no watermarks and no sign-up. "
             f"Files are deleted automatically after {_minutes()} minutes.")
@@ -82,7 +181,12 @@ def _clip(s: str, n: int = 158) -> str:
 
 @lru_cache(maxsize=1)
 def pairs_public() -> list[dict]:
-    return [{"slug": F.pair_slug(a, b), "from": a, "to": b, "accept": F.pair_accept(a), **pair_seo(a, b)} for a, b in F.PAIRS]
+    out = []
+    for a, b in F.PAIRS:
+        rel = related_tool(a, b)
+        out.append({"slug": F.pair_slug(a, b), "from": a, "to": b, "accept": F.pair_accept(a), **pair_seo(a, b),
+                    "related": {"slug": rel, "name": TOOLS_BY_ID[rel].name} if rel in TOOLS_BY_ID else None})
+    return out
 
 
 def page_meta(path: str) -> dict | None:
@@ -161,6 +265,9 @@ def body_html(meta: dict) -> str:
     if meta.get("faqs"):
         parts.append("<h2>Frequently asked questions</h2>" + "".join(
             f"<h3>{e(f['q'])}</h3><p>{e(f['a'])}</p>" for f in meta["faqs"]))
+    if meta.get("related"):
+        r = meta["related"]
+        parts.append(f"<p>Need more options? Try <a href=\"/{e(r['slug'])}\">{e(r['name'])}</a>.</p>")
     parts.append(f"<p class=\"ssr-loading\">Loading {e(BRAND_NAME)}…</p></main>")
     return "".join(parts)
 
