@@ -1,19 +1,21 @@
 version: 2
 updates:
+  # Minor and patch releases are grouped into one weekly PR per ecosystem;
+  # each major release arrives as its own PR so breaking changes can be reviewed separately.
   - package-ecosystem: pip
     directory: /backend
     schedule:
       interval: weekly
     groups:
-      python:
-        patterns: ["*"]
+      python-minor-patch:
+        update-types: [minor, patch]
   - package-ecosystem: npm
     directory: /frontend
     schedule:
       interval: weekly
     groups:
-      frontend:
-        patterns: ["*"]
+      frontend-minor-patch:
+        update-types: [minor, patch]
   - package-ecosystem: docker
     directory: /
     schedule:
@@ -22,3 +24,6 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
