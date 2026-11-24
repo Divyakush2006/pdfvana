@@ -21,11 +21,7 @@ Merge, split, compress, convert, OCR, sign and protect, with no sign-up, no wate
 
 <br/>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/home-dark.jpg" />
-  <source media="(prefers-color-scheme: light)" srcset="docs/assets/home.jpg" />
-  <img src="docs/assets/home.jpg" alt="PDFVana home page: search 49 free PDF, image, audio and video tools, a free open-source iLovePDF and Smallpdf alternative" width="100%" />
-</picture>
+<img src="docs/assets/home.jpg" alt="PDFVana home page: search 49 free PDF, image, audio and video tools, a free open-source iLovePDF and Smallpdf alternative" width="100%" />
 
 <sub><i>Vana (वन) is Sanskrit for "forest": a forest of free tools for every file.</i></sub>
 
