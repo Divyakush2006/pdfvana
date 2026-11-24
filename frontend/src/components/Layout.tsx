@@ -1,7 +1,7 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { ChevronDown, Github, Menu, Moon, ShieldCheck, Sun, X } from "lucide-react";
+import { ChevronDown, Menu, Moon, ShieldCheck, Sun, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Logo, ToolIcon } from "../icons";
+import { GithubMark, Logo, ToolIcon } from "../icons";
 import { useApp, useTheme } from "../store";
 
 const QUICK: [string, string][] = [
@@ -80,7 +80,7 @@ export function Header() {
           </Link>
           {catalog?.repo && (
             <a href={catalog.repo} target="_blank" rel="noreferrer" className="btn-ghost hidden p-2.5 sm:inline-flex" aria-label="Source code on GitHub">
-              <Github className="h-4 w-4" />
+              <GithubMark />
             </a>
           )}
           <button className="btn-ghost p-2.5" onClick={toggle} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>
@@ -133,7 +133,7 @@ export function Footer() {
           <p className="mt-2 max-w-sm text-xs italic text-slate-500">Vana (वन) is Sanskrit for “forest” — a forest of free tools for every file.</p>
           {catalog?.repo && (
             <a href={catalog.repo} className="btn-outline mt-4 px-3 py-2" target="_blank" rel="noreferrer">
-              <Github className="h-4 w-4" /> Star us on GitHub
+              <GithubMark /> Star us on GitHub
             </a>
           )}
         </div>
